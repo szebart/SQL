@@ -1,12 +1,12 @@
-USE [ANALIZY_PJ_PK]
+USE [ANALIZY]
 GO
 
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- pokazuje wszystkie towary w drodze - potrzebne do przerzut體 i podsumowania/sprawdzenia
-ALTER PROCEDURE [Raporty].[BS_podsumowanie przerzut體]
+-- pokazuje wszystkie towary w drodze - potrzebne do przerzut贸w i podsumowania/sprawdzenia
+ALTER PROCEDURE [Raporty].[BS_podsumowanie przerzut贸w]
 AS
 BEGIN
 
@@ -16,7 +16,7 @@ SELECT
 	,a.[Item No_] AS 'Nr indeksu'
 	,a.[Variant Code] AS 'Rozmiar'
 	,a.[Shipment Date]
-	,CAST(SUM(a.[Quantity]) AS INT) AS 'Ilo滄 og髄na'
+	,CAST(SUM(a.[Quantity]) AS INT) AS 'Ilo艙忙 og贸lna'
 	,SUM(CASE 
 			WHEN a.[Realization Status] = 1
 				THEN CAST(a.[Quantity] AS INT)
@@ -42,7 +42,7 @@ SELECT
 
 	,a.[Item Category Code]
 	,a.[Product Group Code]
-	,a.[Transfer-from Code] AS 'Mag 焤骴硂wy'
+	,a.[Transfer-from Code] AS 'Mag 鸥r贸d鲁owy'
 ,CONCAT(CASE 
 	WHEN a.[Not To Ship] = 1
 		THEN 'Zakryty'
@@ -82,24 +82,24 @@ SELECT
 	WHEN b.[WMS Shipment Status] = 2
 		THEN 'WMS Przetwarzanie_czeka na spakowanie'
 	WHEN b.[WMS Shipment Status] = 3
-		THEN 'WMS zako馽zone & spakowane'
+		THEN 'WMS zako帽czone & spakowane'
 	WHEN b.[WMS Shipment Status] = 4
 		THEN 'WMS w trakcie pakowania'
 	WHEN b.[WMS Shipment Status] = 5
-		THEN 'WMS zamkni阾e'
+		THEN 'WMS zamkni锚te'
 	ELSE 'inny'
 	END AS [WMS Shipment Status]
 ,ISNULL(b.[SSCC], 'niewydane') AS 'Nr kartonu'
-,ISNULL(b.[WMS Document No_], 'niewydane') AS 'Nr_dok WMS_pierwotny nr zam_BSz'
+,ISNULL(b.[WMS Document No_], 'niewydane') AS 'Nr_dok WMS_pierwotny nr zam'
 ,a.[Document No_] AS 'Nr dok_okno do pobrania'
-,ISNULL(b.[No_], 'niewydane') AS 'Nr dok_okno do przyj阠ia'
+,ISNULL(b.[No_], 'niewydane') AS 'Nr dok_okno do przyj锚cia'
 ,a.[Transfer Description] AS 'Opis MM'
 ,a.[Shipment Date] AS 'Data zam'
 --,b.[WMS Shipment Status]
 ,a.[Net Weight] AS 'Waga netto'
 ,ISNULL(b.[Created by], 'niewydane') AS 'Stworzone przez'
-FROM [navsql2].[Kazar].[dbo].[KAZAR$Transfer Line] a WITH (NOLOCK)
-FULL JOIN [navsql2].[Kazar].[dbo].[KAZAR$Transfer Header] b WITH (NOLOCK) ON a.[Document No_] = b.[No_]
+FROM [sql2].[Kr].[dbo].[KR$Transfer Line] a WITH (NOLOCK)
+FULL JOIN [sql2].[Kr].[dbo].[KR$Transfer Header] b WITH (NOLOCK) ON a.[Document No_] = b.[No_]
 WHERE 
 
 
