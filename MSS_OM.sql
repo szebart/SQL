@@ -1,4 +1,4 @@
-	USE [ANALIZY_PJ_PK]
+	USE [ANALIZY]
 GO
 
 ALTER PROCEDURE [Raporty].[BS_MSS_check_sale]
@@ -8,15 +8,14 @@ BEGIN
 	
 	
 	---------------------------------------------------------------------------------
---sprawdzenie sprzeda¿y opcji MSS (wrzuæ do tabeli pod spodem) w zadanym okresie
+--sprawdzenie sprzedaÂ¿y opcji MSS (wrzuÃ¦ do tabeli pod spodem) w zadanym okresie
 -- WERSJA z INNER JOIN
 
-  --tabela z indeksami OM na MSS = SELECT * FROM [ANALIZY_PJ_PK].[dbo].[MSS_2021_OM_table]
-  --USE [ANALIZY_PJ_PK]
+  --tabela z indeksami OM na MSS = SELECT * FROM [ANALIZY].[dbo].[MSS_2021_OM_table]
+  --USE [ANALIZY]
   --TRUNCATE TABLE [MSS_2021_OM_table]
   --INSERT INTO [MSS_2021_OM_table]
   --VALUES
-  --('64330-04-00')
   --('_____'),
 
 
@@ -29,13 +28,13 @@ SET @month2 = 10
 SET @year = 2021;
 
 WITH CTE
-AS -- sprzeda¿ ze zwrotami 
+AS -- sprzedaÂ¿ ze zwrotami 
 	(
 	SELECT [Item No_],
 		[Date],
 		[Store No_],
 		[Quantity]
-	FROM [dbo].[ReturnsSTLines_BI]
+	FROM [dbo].[RSTLines_BI]
 	
 	UNION ALL
 	
@@ -43,7 +42,7 @@ AS -- sprzeda¿ ze zwrotami
 		[Date],
 		[Store No_],
 		[Quantity]
-	FROM [dbo].[SalesSTLines_BI]
+	FROM [dbo].[SSTLines_BI]
 )
 , CTE1
 AS (
@@ -52,7 +51,7 @@ AS (
 				[Store No_],
 				CAST(SUM([Quantity]) AS FLOAT) AS 'SumQuantitySold'
 	FROM CTE main
-	INNER JOIN [ANALIZY_PJ_PK].[dbo].[MSS_2021_OM_table] sub
+	INNER JOIN [ANALIZY].[dbo].[MSS_2021_OM_table] sub
 	ON main.[Item No_] = sub.[INDEKS]
 
 	WHERE 
@@ -75,23 +74,21 @@ AS (
 	SELECT 
 	[Item No_],
 	[SumQuantitySold],
-	DENSE_RANK() OVER (ORDER BY [SumQuantitySold] DESC	) 'Dense_rank'
+	DENSE_RANK() OVER (ORDER BY [SumQuantitySold] DESC) 'Dense_rank'
 	FROM CTE2
 
 	END
 	-------------------------------------------------------------------------------------------------
 	--Wersja z correlated query
 
-	--USE [ANALIZY_PJ_PK]
+	--USE [ANALIZY]
 
---  --tabela z indeksami OM na MSS = SELECT * FROM [ANALIZY_PJ_PK].[dbo].[MSS_2021_OM_table]
---  --USE [ANALIZY_PJ_PK]
+--  --tabela z indeksami OM na MSS = SELECT * FROM [ANALIZY].[dbo].[MSS_2021_OM_table]
+--  --USE [ANALIZY]
 --  --TRUNCATE TABLE [MSS_2021_OM_table]
 --  --INSERT INTO [MSS_2021_OM_table]
 --  --VALUES
---  --('64330-04-00')
 --  --('_____'),
-
 
 --DECLARE @month1 INT
 --DECLARE @month2 INT
@@ -102,13 +99,13 @@ AS (
 --SET @year = 2021;
 
 --WITH CTE
---AS -- sprzeda¿ ze zwrotami 
+--AS -- sprzedaÂ¿ ze zwrotami 
 --	(
 --	SELECT [Item No_],
 --		[Date],
 --		[Store No_],
 --		[Quantity]
---	FROM [dbo].[ReturnsSTLines_BI]
+--	FROM [dbo].[RSTLines_BI]
 	
 --	UNION ALL
 	
@@ -116,7 +113,7 @@ AS (
 --		[Date],
 --		[Store No_],
 --		[Quantity]
---	FROM [dbo].[SalesSTLines_BI]
+--	FROM [dbo].[SSTLines_BI]
 --)
 --, CTE1
 --AS (
@@ -127,7 +124,7 @@ AS (
 --	FROM CTE main
 --	WHERE main.[Item No_] IN (
 --			SELECT [INDEKS]
---			FROM [ANALIZY_PJ_PK].[dbo].[MSS_2021_OM_table] sub
+--			FROM [ANALIZY].[dbo].[MSS_2021_OM_table] sub
 --			WHERE main.[Item No_] = sub.[INDEKS]
 --				AND MONTH([Date]) IN (@month1,	@month2)
 --				AND YEAR([Date]) = @year
@@ -147,7 +144,7 @@ AS (
 --	SELECT 
 --	[Item No_],
 --	[SumQuantitySold],
---	DENSE_RANK() OVER (ORDER BY [SumQuantitySold] DESC	) 'Dense_rank'
+--	DENSE_RANK() OVER (ORDER BY [SumQuantitySold] DESC) 'Dense_rank'
 --	FROM CTE2
 
 
