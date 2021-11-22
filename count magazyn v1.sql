@@ -1,18 +1,18 @@
--- najlepsze 5 indeksów OM OD w miesi¹cu 8.2021 i ich ruchy magazynowe z MKC na inne lokacje
+-- najlepsze 5 indeksÃ³w OM OD w miesiÂ¹cu 8.2021 i ich ruchy magazynowe z MKC na inne lokacje
 DECLARE @date INT
 DECLARE @year INT
 
 SET @date =8
 SET @year = 2021;
 
-WITH CTE AS -- sprzeda¿ ze zwrotami 
+WITH CTE AS -- sprzedaÂ¿ ze zwrotami 
 (
 SELECT  
 [Item No_],
 [Date],
 [Store No_],
 [Quantity]
-FROM [dbo].[ReturnsSTLines_BI]
+FROM [dbo].[RSTLines_BI]
 
 UNION ALL
 
@@ -21,16 +21,16 @@ SELECT
 [Date],
 [Store No_],
 [Quantity]
-FROM [dbo].[SalesSTLines_BI]
+FROM [dbo].[SSTLines_BI]
 ) 
 
-, CTE2 AS ( -- do³¹czam ITEMBI
+, CTE2 AS ( -- doÂ³Â¹czam ITEMBI
 SELECT DISTINCT 
 [No_],
 [Item Category Code]
-FROM [Kazar_BI].[dbo].[Item_BI]
+FROM [Kr_BI].[dbo].[Item_BI]
 )
-,CTE3 AS ( -- filtrujê OM OD po dacie
+,CTE3 AS ( -- filtrujÃª OM OD po dacie
 SELECT
 a.[Item No_],
 b.[Item Category Code],
@@ -44,16 +44,16 @@ a.[Item No_],
 b.[Item Category Code]
 )
 
-,CTE4 AS ( -- zapytanie o transfery z drugiej tabeli transferów
+,CTE4 AS ( -- zapytanie o transfery z drugiej tabeli transferÃ³w
 SELECT [Item No_],
 COUNT([Item No_]) AS 'NO. Transfers from MKC TO OTHER'
-from  [Kazar_BI].[dbo].[StockTransactions_BI]  
+from  [Kr_BI].[dbo].[StockTran]  
 	WHERE [Location Code] = 'MKC'
 	AND [Positive] = 0
 	AND [Entry Type] = 4
 	GROUP BY [Item No_]
 )
-SELECT TOP 5 -- z³¹czenie tabel i wynik koñcowy
+SELECT TOP 5 -- zÂ³Â¹czenie tabel i wynik koÃ±cowy
 	a.[Item No_],
 	CAST(a.[Quantity] AS FLOAT) as 'Quantity',
 	a.[Item Category Code],
