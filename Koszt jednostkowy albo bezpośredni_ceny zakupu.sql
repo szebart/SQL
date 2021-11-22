@@ -1,4 +1,4 @@
-USE [ANALIZY_PJ_PK]
+USE [ANALIZY]
 GO
 
 SET ANSI_NULLS ON
@@ -26,7 +26,7 @@ BEGIN
 					ELSE [Unit Cost] * 1.23
 					END AS FLOAT), 2) AS [Koszt jednostkowy VAT23]
 		,[Primary Sales Price] AS [Cena pierwotna aktualna]
-	FROM [navsql2].[Kazar].[dbo].[KAZAR$Item] WITH (NOLOCK)
+	FROM [sql2].[Kr].[dbo].[KR$Item] WITH (NOLOCK)
 	GROUP BY [No_]
 		,[Item Category Code]
 		,[Product Group Code]
