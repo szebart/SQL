@@ -1,4 +1,4 @@
-USE [ANALIZY_PJ_PK]
+USE [ANALIZY]
 GO
 /****** Object:  StoredProcedure [Raporty].[BS_Besty]    Script Date: 17.11.2021 14:37:05 ******/
 SET ANSI_NULLS ON
@@ -56,7 +56,7 @@ AS (
 		,[Net Amount]
 		,[Gross Amount]
 		,[Primary Sales Gross Price]
-	FROM [Kazar_BI].[dbo].[SalesSTLines_BI] WITH (NOLOCK)
+	FROM [Kr_BI].[dbo].[SalesSTLines_BI] WITH (NOLOCK)
 
 	UNION ALL
 	
@@ -67,7 +67,7 @@ AS (
 		,[Net Amount]
 		,[Gross Amount]
 		,[Primary Sales Gross Price]
-	FROM [Kazar_BI].[dbo].[ReturnsSTLines_BI] WITH (NOLOCK)
+	FROM [Kr_BI].[dbo].[ReturnsSTLines_BI] WITH (NOLOCK)
 	)
 	,CTE1
 AS (
@@ -80,7 +80,7 @@ AS (
 		,b.[Product Group Code]
 		,b.[Season Code]
 	FROM CTE a WITH (NOLOCK)
-	LEFT JOIN [navsql2].[Kazar].[dbo].[KAZAR$Item] b WITH (NOLOCK)
+	LEFT JOIN [sql2].[Kr].[dbo].[KR$Item] b WITH (NOLOCK)
 		ON a.[Item No_] = b.[No_] collate Polish_100_CS_AS
 	WHERE
 		[Date] >= @date
@@ -151,19 +151,19 @@ SELECT [Item No_]
 	--,[baze64Photo]
 	,[zdjecie_1]
 FROM CTE4 z
---LEFT JOIN [ANALIZY_PJ_PK].[dbo].[Tbl_000_NavPhotosBase64] e WITH (NOLOCK)
+--LEFT JOIN [ANALIZY].[dbo].[Tbl_000_NavPhotosBase64] e WITH (NOLOCK)
 --	ON z.[Item No_] = e.Indeks COLLATE POLISH_CI_AS
-LEFT JOIN [ANALIZY_PJ_PK].[dbo].[magento_zdjecia] e WITH (NOLOCK)
-ON z.[Item No_] = e.[kazar_erp_item]
+LEFT JOIN [ANALIZY].[dbo].[magento_zdjecia] e WITH (NOLOCK)
+ON z.[Item No_] = e.[kr_erp_item]
 
 SELECT *
 FROM @tabela
 ORDER BY 3
 	,5
 	,9 ASC
-		-- -- sprawdzenie zdjêæ
+		-- -- sprawdzenie zdjÃªÃ¦
 		-- select * 
-		--FROM [navsql2].[Kazar].[dbo].[KAZAR$Item] a
-		--LEFT JOIN [ANALIZY_PJ_PK].[dbo].[Tbl_000_NavPhotosBase64]  b WITH (NOLOCK)  ON a.[No_] = b.[Indeks]
+		--FROM [sql2].[Kr].[dbo].[KR$Item] a
+		--LEFT JOIN [ANALIZY].[dbo].[Tbl_000_NavPhotosBase64]  b WITH (NOLOCK)  ON a.[No_] = b.[Indeks]
 		--WHERE a.[Season Code] = 'LJ21'
 END
