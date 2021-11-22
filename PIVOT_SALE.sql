@@ -1,4 +1,4 @@
-	USE [ANALIZY_PJ_PK]
+	USE [ANALIZY]
 GO
 
 alter PROCEDURE [Raporty].[BS_12_months_sale]
@@ -7,7 +7,7 @@ BEGIN
 
 
 DECLARE @item NVARCHAR(15)
-SET @item = '34899-27-00' ;  ----- wpisz item, który chcesz sprawdziæ JE¯ELI TYLKO JEDEN I WIERSZ 57 ODFAJKUJ
+SET @item = '34899-27-00' ;  ----- wpisz item, ktÃ³ry chcesz sprawdziÃ¦ JEÂ¯ELI TYLKO JEDEN I WIERSZ 57 ODFAJKUJ
 
 
 WITH CTE AS 
@@ -16,7 +16,7 @@ WITH CTE AS
 		[Date],
 		[Store No_],
 		[Quantity]
-	FROM [dbo].[ReturnsSTLines_BI]
+	FROM [dbo].[RSTLines_BI]
 	
 	UNION ALL
 	
@@ -24,7 +24,7 @@ WITH CTE AS
 		[Date],
 		[Store No_],
 		[Quantity]
-	FROM [dbo].[SalesSTLines_BI]
+	FROM [dbo].[SSTLines_BI]
 )
 
 	
@@ -54,7 +54,7 @@ FROM
 	
 		FROM CTE
 		WHERE [Date] > '2019-01-01' 
-		--AND [Item No_] = @item --MO¯NA WG ZADEKLAROWANEGO ITEMU
+		--AND [Item No_] = @item --MOÂ¯NA WG ZADEKLAROWANEGO ITEMU
 		GROUP BY 
 		[Item No_],
 		[Date],
