@@ -1,4 +1,4 @@
-/* Stosunek paragonów zawieraj¹cych w sobie dwie wskazane kategorie, do wszystkich paragonów w puli wg daty*/
+/* Stosunek paragonÃ³w zawierajÂ¹cych w sobie dwie wskazane kategorie, do wszystkich paragonÃ³w w puli wg daty*/
 
 DECLARE @datefrom DATE
 SET @datefrom = '2020-08-01';
@@ -22,8 +22,8 @@ AS (
 			[Document No_],
 			i.[Item Category Code] collate Polish_100_CS_AS
 			) AS konkat
-	FROM [dbo].[SalesSTLines_BI] a
-	INNER JOIN [navsql2].[Kazar].[dbo].[KAZAR$Item] i WITH (NOLOCK)
+	FROM [dbo].[SSTLines_BI] a
+	INNER JOIN [sql2].[Kr].[dbo].[KR$Item] i WITH (NOLOCK)
 		ON a.[Item No_] = i.[No_] collate Polish_100_CS_AS
 	WHERE [Date] > @datefrom
 		AND i.[Item Category Code] IN (@kat1)
@@ -39,8 +39,8 @@ AS (
 		NULL AS '[Item Category Code]',
 		NULL AS '[rn]',
 		NULL AS '[konkat]'
-	FROM [dbo].[SalesSTLines_BI] a
-	INNER JOIN [navsql2].[Kazar].[dbo].[KAZAR$Item] i WITH (NOLOCK)
+	FROM [dbo].[SSTLines_BI] a
+	INNER JOIN [sql2].[Kr].[dbo].[KR$Item] i WITH (NOLOCK)
 		ON a.[Item No_] = i.[No_] collate Polish_100_CS_AS
 	WHERE [Date] > @datefrom
 		AND i.[Item Category Code] IN (@kat1)
@@ -49,7 +49,7 @@ AS (
 	),
 CTE2
 AS (
-	--paragony selekcja wg parametrów
+	--paragony selekcja wg parametrÃ³w
 	SELECT [Document No_],
 		[Date],
 		[Item No_],
