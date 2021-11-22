@@ -1,4 +1,4 @@
-ALTER PROC [Raporty].[BS_Sprzeda¿ ze zwrotami_declare_date]
+ALTER PROC [Raporty].[BS_SprzedaÂ¿ ze zwrotami_declare_date]
 AS BEGIN
 
 DECLARE @date1 INT
@@ -10,13 +10,13 @@ SET @date2 = YEAR(GETDATE())-1
 SET @year = YEAR(GETDATE())-1;
 
 WITH CTE
-AS -- sprzeda¿ ze zwrotami 
+AS -- sprzedaÂ¿ ze zwrotami 
 	(
 	SELECT [Item No_],
 		[Date],
 		[Store No_],
 		[Quantity]
-	FROM [dbo].[ReturnsSTLines_BI]
+	FROM [dbo].[RSTLines_BI]
 	
 	UNION ALL
 	
@@ -24,7 +24,7 @@ AS -- sprzeda¿ ze zwrotami
 		[Date],
 		[Store No_],
 		[Quantity]
-	FROM [dbo].[SalesSTLines_BI]
+	FROM [dbo].[SSTLines_BI]
 )
 , CTE1
 AS (
