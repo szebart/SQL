@@ -1,0 +1,25 @@
+/* podzial na kategorie po cenie w N grupach*/
+
+SELECT [ProductKey]
+	,[UnitPrice]
+	,[kategoria cenowa]
+	,CASE 
+		WHEN x.[kategoria cenowa] = 1
+			THEN 'exppensive'
+		WHEN x.[kategoria cenowa] = 2
+			THEN 'mid'
+		WHEN x.[kategoria cenowa] = 3
+			THEN 'cheap'
+		WHEN x.[kategoria cenowa] = 4
+			THEN 'verychip'
+		END AS 'kategoria cenowa'
+FROM (
+	SELECT [ProductKey]
+		,[UnitPrice]
+		,NTILE(4) OVER (
+			ORDER BY UnitPrice DESC
+			) AS 'kategoria cenowa'
+	FROM [AdventureWorksDW2019].[dbo].[FactInternetSales]
+	GROUP BY ProductKey
+		,[UnitPrice]
+	) x;
