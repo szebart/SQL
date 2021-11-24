@@ -1,8 +1,8 @@
-/* podzial na kategorie po cenie w N grupach*/
+/* podzial na kategorie po cenie w N grupach + Percent Rank*/
 
 SELECT [ProductKey]
 	,[UnitPrice]
-	,[kategoria cenowa]
+	,[%rank]
 	,CASE 
 		WHEN x.[kategoria cenowa] = 1
 			THEN 'exppensive'
@@ -19,6 +19,9 @@ FROM (
 		,NTILE(4) OVER (
 			ORDER BY UnitPrice DESC
 			) AS 'kategoria cenowa'
+		,ROUND(PERCENT_RANK() OVER (
+				ORDER BY UnitPrice
+				), 2) * 100 AS '%rank'
 	FROM [AdventureWorksDW2019].[dbo].[FactInternetSales]
 	GROUP BY ProductKey
 		,[UnitPrice]
